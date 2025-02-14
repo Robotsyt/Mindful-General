@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Army Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style type = "text/css">
+        
+        .box1{
+            width: 100px;
+            height: 100px;
+            float: left;
+            background:black;
+            display: none;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/RobotArmy_LoGo.png') }}" alt="Robot Army Logo" class="logo-img">
+                <p>Robot Army’s Mindful General</p>
+            </div>
+            <ul class="nav">
+                <li><button class="active">Chat</button></li>
+                <li><button>Progress</button></li>
+                <li><button>Journal</button></li>
+                <li><button>Settings</button></li>
+            </ul>
+            <button class="emergency-btn">Emergency Support</button>
+        </div>
+
+        <!-- Main Chat Section -->
+        <div class="main-content">
+            <div class="chat-header">
+                <h2>Hello, I’m the Mindful General, your emotional support companion.</h2>
+            </div>
+            <div class="chat-box" id="chat-box"></div>
+            <div class="feeling-options">
+                <p>HOW ARE YOU FEELING?</p>
+                <button>😃 Great</button>
+                <button>😊 Good</button>
+                <button>😐 Okay</button>
+                <button>😞 Bad</button>
+                <button>😭 Terrible</button>
+            </div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Type your message..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <!-- Support Tools Section -->
+        <div class="support-tools">
+            <h3>Support Tools</h3>
+            
+            <button id="breathing">Breathing Exercise</button>
+            <div id="breathing"; style = "display:none"; href = "https://www.healthline.com/health/breathing-exercise"; top: 700px; left 400px;></div>
+            <button>Breathing Exercise</button>
+            <button>Mindfulness</button>
+            <button>Coping Strategies</button>
+            <button>Crisis Resources</button>
+            <button>Daily Goals</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="emergency-contacts">
+            <h4>Emergency Contacts</h4>
+            <p>National Crisis Line: 988</p>
+            <p>Emergency: 911</p>
+        </div>
+        <div class="quick-links">
+            <h4>Quick Links</h4>
+            <p>About Us</p>
+            <p>Privacy Policy</p>
+            <p>Terms of Service</p>
+        </div>
+        <div class="social-media">
+            <h4>Connect</h4>
+            <p>Twitter | Facebook | Instagram</p>
+        </div>
+    </footer>
+
+    <script>
+        // Chat sending logic
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value;
+            if (!userInput.trim()) return;
+            document.getElementById("chat-box").innerHTML += `<p class="user"><strong>You:</strong> ${userInput}</p>`;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("chat-box").innerHTML += `<p class="bot"><strong>Bot:</strong> ${data.response}</p>`;
+                document.getElementById("user-input").value = "";
+                document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

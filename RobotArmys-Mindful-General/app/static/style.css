@@ -1,0 +1,166 @@
+/* Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2a3d57; /* Steel blue background */
+    color: white;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #444;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .logo img {
+    width: 100%;
+    max-width: 150px; /* Adjust logo size */
+    margin-bottom: 10px;
+}
+
+.sidebar .logo p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #800020; /* Burgundy text for the title */
+}
+
+.sidebar .nav {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar .nav li {
+    margin: 10px 0;
+}
+
+.sidebar .nav button {
+    width: 100%;
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sidebar .nav button.active {
+    background-color: #800020;
+}
+
+.sidebar .emergency-btn {
+    background-color: #c20000;
+    padding: 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 5px;
+}
+
+.chat-header h2 {
+    color: #800020;
+}
+
+.chat-box {
+    border: 1px solid #555;
+    padding: 15px;
+    height: 300px;
+    overflow-y: scroll;
+    background-color: #444;
+    margin-bottom: 20px;
+}
+
+.feeling-options {
+    margin-bottom: 20px;
+}
+
+.feeling-options button {
+    padding: 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-container input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #555;
+    background-color: #3a3a3a;
+    color: white;
+    border-radius: 5px;
+}
+
+.input-container button {
+    padding: 10px;
+    background-color: #800020;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Support Tools */
+.support-tools {
+    margin-top: 20px;
+}
+
+.support-tools button {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Footer */
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #444;
+    color: white;
+}
+
+footer .emergency-contacts, footer .quick-links, footer .social-media {
+    width: 30%;
+}
+
+footer h4 {
+    margin-bottom: 10px;
+}
+
+footer p {
+    margin: 5px 0;
+}
