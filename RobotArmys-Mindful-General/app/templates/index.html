@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robot Army Chatbot</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style type = "text/css">
-        
-        .box1{
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Robot Army Chatbot</title>
+        <link rel="stylesheet" href="../static/images/style.css"> <!-- Updated path -->
+    <style type ="text/css">
+         .box1{
             width: 100px;
             height: 100px;
             float: left;
@@ -23,7 +21,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <img src="{{ url_for('static', filename='images/RobotArmy_LoGo.png') }}" alt="Robot Army Logo" class="logo-img">
+                <!--<img src="{{ url_for('static', filename='images/RobotArmy_LoGo.png') }}" alt="Robot Army Logo" class="logo-img"> -->
                 <p>Robot Army’s Mindful General</p>
             </div>
             <ul class="nav">
@@ -34,33 +32,37 @@
             </ul>
             <button class="emergency-btn">Emergency Support</button>
         </div>
-
+    <main>
         <!-- Main Chat Section -->
         <div class="main-content">
             <div class="chat-header">
                 <h2>Hello, I’m the Mindful General, your emotional support companion.</h2>
             </div>
-            <div class="chat-box" id="chat-box"></div>
-            <div class="feeling-options">
-                <p>HOW ARE YOU FEELING?</p>
-                <button>😃 Great</button>
-                <button>😊 Good</button>
-                <button>😐 Okay</button>
-                <button>😞 Bad</button>
-                <button>😭 Terrible</button>
-            </div>
-            <div class="input-container">
-                <input type="text" id="user-input" placeholder="Type your message..." />
-                <button onclick="sendMessage()">Send</button>
-            </div>
+            <div class="chat-box" id="chat-box">
+                <div class="feeling-options">
+                    <p>HOW ARE YOU FEELING?</p>
+                    <button>😃 Great</button>
+                    <button>😊 Good</button>
+                    <button>😐 Okay</button>
+                    <button>😞 Bad</button>
+                    <button>😭 Terrible</button>
+                </div>
+                <div class="prompt-box">
+                    <label>
+                      <input name="prompt" placeholder="Enter instructions here" type="text"
+                        value="">
+                    </label>
+                    <button type="submit">Go</button>
+                  </div>
+                 </div>
         </div>
-
+    </main>
         <!-- Support Tools Section -->
         <div class="support-tools">
             <h3>Support Tools</h3>
             
             <button id="breathing">Breathing Exercise</button>
-            <div id="breathing"; style = "display:none"; href = "https://www.healthline.com/health/breathing-exercise"; top: 700px; left 400px;></div>
+            <div id="breathing" style="display:none;" href="https://www.healthline.com/health/breathing-exercise"></div>
             <button>Breathing Exercise</button>
             <button>Mindfulness</button>
             <button>Coping Strategies</button>
@@ -88,26 +90,10 @@
         </div>
     </footer>
 
-    <script>
-        // Chat sending logic
-        function sendMessage() {
-            let userInput = document.getElementById("user-input").value;
-            if (!userInput.trim()) return;
-            document.getElementById("chat-box").innerHTML += `<p class="user"><strong>You:</strong> ${userInput}</p>`;
-
-            fetch("/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("chat-box").innerHTML += `<p class="bot"><strong>Bot:</strong> ${data.response}</p>`;
-                document.getElementById("user-input").value = "";
-                document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
-            });
-        }
-    </script>
+    
+    <script src="/templates/main.js"></script>
+    <script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
+           
 </body>
 </html>
 
