@@ -88,7 +88,7 @@ body {
 .chat-box {
     border: 1px solid #555;
     padding: 15px;
-    height: 1200px;
+    height: 1000px;
     overflow-y: scroll;
     background-color: #444;
     margin-bottom: 20px;
@@ -166,3 +166,4 @@ footer h4 {
 footer p {
     margin: 5px 0;
 }
+

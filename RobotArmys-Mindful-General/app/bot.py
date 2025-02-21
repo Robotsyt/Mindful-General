@@ -35,6 +35,7 @@ def generate_api():
         except Exception as e:
             return jsonify({ "error": str(e) })
 
+
 # Defines a route to serve static files from the web directory for any given path.
 # When a request matches the path, it sends the requested file from the web directory.
 @app.route('/<path:path>')

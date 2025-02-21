@@ -38,8 +38,18 @@
             <div class="chat-header">
                 <h2>Hello, I’m the Mindful General, your emotional support companion.</h2>
             </div>
+            <form>
+                <div class="prompt-box">
+                  <label>
+                    <input name="prompt" placeholder="Enter instructions here" type="text"
+                      value="">
+                  </label>
+                  <button type="submit">Go</button>
+                </div>
+              </form>
             <div class="chat-box" id="chat-box">
                 <div class="feeling-options">
+                    <p class="output">(Results will appear here)</p>
                     <p>HOW ARE YOU FEELING?</p>
                     <button>😃 Great</button>
                     <button>😊 Good</button>
@@ -91,9 +101,9 @@
     </footer>
 
     
-    <script src="/templates/main.js"></script>
+    <script type="module" src="../static/images/main.js"></script>
     <script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
-           
+     
 </body>
 </html>
 
