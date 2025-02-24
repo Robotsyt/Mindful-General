@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Army Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/RobotArmy_LoGo.png') }}" alt="Robot Army Logo" class="logo-image">
+            </div>
+            <nav class="nav">
+                <button data-section="chat-box" class="active">Chat</button>
+                <button data-section="progress">Progress</button>
+                <button data-section="journal">Journal</button>
+                <button data-section="settings">Settings</button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Chat Section -->
+            <div id="chat-box" class="section active">
+                <div class="chat-header">
+                    <h2>Hello, I'm the Mindful General, your emotional support companion.</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="feeling-options">
+                    <p>HOW ARE YOU FEELING?</p>
+                    <button onclick="sendFeeling('Great')">😃 Great</button>
+                    <button onclick="sendFeeling('Good')">😊 Good</button>
+                    <button onclick="sendFeeling('Okay')">😐 Okay</button>
+                    <button onclick="sendFeeling('Bad')">😞 Bad</button>
+                    <button onclick="sendFeeling('Terrible')">😭 Terrible</button>
+                </div>
+                <form id="chat-form">
+                    <div class="prompt-box">
+                        <input type="text" id="user-input" placeholder="Type your message here..." required>
+                        <button type="submit">Send</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Progress Section -->
+            <div id="progress" class="section">
+                <div class="section-header">
+                    <h2>Your Progress</h2>
+                </div>
+                <div class="progress-grid">
+                    <div class="progress-card">
+                        <h3>Mood Trends</h3>
+                        <canvas id="mood-chart"></canvas>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Goals</h3>
+                        <div id="goals-list" class="goals-list"></div>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Sessions</span>
+                                <span class="stat-value" id="total-sessions">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Streak Days</span>
+                                <span class="stat-value" id="streak-days">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Average Mood</span>
+                                <span class="stat-value" id="avg-mood">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journal Section -->
+            <div id="journal" class="section">
+                <div class="section-header">
+                    <h2>Journal</h2>
+                    <button onclick="showJournalEntry()" class="action-button">New Entry</button>
+                </div>
+                <div id="journal-entries" class="journal-entries"></div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section">
+                <h2>Settings</h2>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Notification Preferences</h3>
+                        <div class="setting-option">
+                            <label>
+                                <input type="checkbox" id="daily-reminder">
+                                Daily Check-in Reminder
+                            </label>
+                        </div>
+                        <div class="setting-option">
+                            <label>
+                                <input type="checkbox" id="progress-updates">
+                                Weekly Progress Updates
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Tools Section -->
+        <div class="support-tools">
+            <h3>Support Tools</h3>
+            <button onclick="showBreathingExercise()">Breathing Exercise</button>
+            <button onclick="showMindfulness()">Mindfulness</button>
+            <button onclick="showCopingStrategies()">Coping Strategies</button>
+        </div>
+    </div>
+
+    <!-- Breathing Exercise Modal -->
+    <div id="breathing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Breathing Exercise</h2>
+            <div class="breathing-container">
+                <div class="breathing-circle"></div>
+                <div class="breathing-text">Breathe In</div>
+                <div class="breathing-timer">2:00</div>
+            </div>
+            <div class="breathing-controls">
+                <select id="breathing-type-selector">
+                    <option value="box">Box Breathing</option>
+                    <option value="relaxing">Relaxing Breath</option>
+                    <option value="calm">Calming Breath</option>
+                </select>
+                <button onclick="setBreathingDuration(2)">2 Min</button>
+                <button onclick="setBreathingDuration(5)">5 Min</button>
+                <button onclick="setBreathingDuration(10)">10 Min</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat functionality
+        async function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessageToChat('user', message);
+            input.value = '';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: message
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    addMessageToChat('bot', data.response);
+                } else {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessageToChat('bot', 'Sorry, I encountered an error. Please try again.');
+            }
+        }
+
+        function addMessageToChat(type, content) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `<p>${content}</p>`;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function sendFeeling(feeling) {
+            try {
+                const response = await fetch('/api/feeling', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ feeling: feeling })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send feeling');
+                }
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    addMessageToChat('bot', data.response);
+                    loadProgress();
+                } else {
+                    throw new Error(data.error || 'Failed to process feeling');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessageToChat('bot', 'Sorry, I encountered an error processing your feeling. Please try again.');
+            }
+        }
+
+        // Progress tracking
+        async function loadProgress() {
+            try {
+                const response = await fetch('/api/progress');
+                const data = await response.json();
+                
+                updateMoodChart(data.feelings);
+                updateGoalsList(data.goals);
+                updateWellnessStats(data);
+            } catch (error) {
+                console.error('Error loading progress:', error);
+            }
+        }
+
+        function updateMoodChart(feelings) {
+            const ctx = document.getElementById('mood-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: feelings.map(f => f.date),
+                    datasets: [{
+                        label: 'Mood',
+                        data: feelings.map(f => f.value),
+                        borderColor: '#56CCF2',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateGoalsList(goals) {
+            const goalsList = document.getElementById('goals-list');
+            goalsList.innerHTML = goals.map(goal => `
+                <div class="goal-item">
+                    <input type="checkbox" ${goal.completed ? 'checked' : ''}>
+                    <span>${goal.text}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateWellnessStats(data) {
+            document.getElementById('total-sessions').textContent = data.totalSessions;
+            document.getElementById('streak-days').textContent = data.streakDays;
+            document.getElementById('avg-mood').textContent = data.averageMood.toFixed(1);
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            if (sectionId === 'progress') {
+                loadProgress();
+            }
+        }
+
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chat form
+            document.getElementById('chat-form').addEventListener('submit', sendMessage);
+            
+            // Initialize navigation
+            document.querySelectorAll('.nav button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const sectionId = button.getAttribute('data-section');
+                    showSection(sectionId);
+                });
+            });
+            
+            // Show chat section by default
+            showSection('chat-box');
+            
+            // Load initial progress data
+            loadProgress();
+
+            // Add welcome message
+            addMessageToChat('bot', 'Hello! I\'m the Mindful General, your emotional support companion. How are you feeling today?');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "questions": [
+    {
+      "question": "Hello",
+      "answer": "Hello there!"
+    },
+    {
+      "question": "How are you!",
+      "answer": "I don't know how to feel!"
+    }
+  ],
+  "coping_strategies": [
+    {
+      "name": "Deep Breathing",
+      "description": "Take slow, deep breaths to help calm your mind and body.",
+      "steps": [
+        "Find a comfortable position",
+        "Breathe in slowly through your nose for 4 counts",
+        "Hold for 4 counts",
+        "Exhale slowly through your mouth for 4 counts",
+        "Repeat 5-10 times"
+      ]
+    },
+    {
+      "name": "5-4-3-2-1 Grounding",
+      "description": "Use your senses to ground yourself in the present moment.",
+      "steps": [
+        "Name 5 things you can see",
+        "Name 4 things you can touch",
+        "Name 3 things you can hear",
+        "Name 2 things you can smell",
+        "Name 1 thing you can taste"
+      ]
+    }
+  ],
+  "emergency_resources": {
+    "crisis_lines": [
+      {
+        "name": "National Crisis Line",
+        "number": "988",
+        "available": "24/7"
+      },
+      {
+        "name": "Emergency Services",
+        "number": "911",
+        "available": "24/7"
+      }
+    ],
+    "online_resources": [
+      {
+        "name": "Crisis Text Line",
+        "contact": "Text HOME to 741741",
+        "website": "https://www.crisistextline.org/"
+      }
+    ]
+  }
+}
