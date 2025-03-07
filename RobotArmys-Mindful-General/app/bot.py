@@ -9,7 +9,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
 # Configure the Gemini bot
-os.environ["GOOGLE_API_KEY"] = "AIzaSyAQKWb8omb0RVV3QXeckS_TyBYqZlpfxVI"; 
+os.environ["GOOGLE_API_KEY"] = "AIzaSyC4Gy-mB9yA9GClq8T17L0hwvO-CN7DOt4"; 
 
 @app.route("/")
 def home():
